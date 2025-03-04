@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Lineplot from '../components/Lineplot';
 
 const Dashboard = () => {
     const [weights, setWeights] = useState([]);
@@ -21,6 +22,7 @@ const Dashboard = () => {
             const response = await axios.post('http://localhost:3000/weight', {weight}, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response.data.weights);
             setWeight(null);
+            e.target.reset()
         } catch (error) {
             console.error("Error adding a weight")
         }
@@ -36,9 +38,9 @@ const Dashboard = () => {
                 console.error("Error fetching weights")
             }
         }
-
         fetchWeights();
     }, [])
+    
     return (
         <div>
             <h2>Dashboard</h2>
@@ -53,6 +55,9 @@ const Dashboard = () => {
                     <li key={windex}>{w.date} - {w.weight}</li>
                 ))}
             </ul>
+
+            <Lineplot weights={weights}/>
+
         </div>
     )
 }
