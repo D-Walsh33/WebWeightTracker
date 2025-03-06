@@ -1,29 +1,27 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+
 const { Schema } = mongoose;
 
-const weightSchema = new Schema({
-  weight: {
-    required: true,
-    type: Schema.Types.Number,
+const UserSchema = new Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  weights: [
+    {
+      _id: { type: Schema.Types.ObjectId, auto: true }, // Unique ID for each entry
+      weight: { type: Number, required: true },
+      date: { type: Date, default: Date.now },
+    },
+  ],
+  goal: {
+    targetWeight: Number,
+    deadline: Date,
   },
-  date: {
-    type: Date,
-    default: Date.now,
+  settings: {
+    unit: { type: String, enum: ["kg", "lbs"], default: "kg" },
+    notifications: { type: Boolean, default: false },
   },
+  createdAt: { type: Date, default: Date.now },
 });
 
-const userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  weights: [weightSchema],
-});
-
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", UserSchema);
