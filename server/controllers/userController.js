@@ -73,7 +73,6 @@ exports.addWeightEntry = async (req, res) => {
       { $push: { weights: newEntry } },
       { new: true }
     );
-
     res.status(200).json({ message: "Weight entry added" });
   } catch (error) {
     res.status(500).json({ error: error.message });

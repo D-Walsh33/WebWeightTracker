@@ -5,29 +5,15 @@ import Lineplot from '../components/Lineplot';
 import WeightList from "../components/WeightList";
 import Stats from '../components/Stats'
 import AddWeight from '../components/AddWeight'
-
+import Button from "react-bootstrap/esm/Button";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const Dashboard = ({setIsAuthenticated}) => {
+const Dashboard = () => {
     const [weights, setWeights] = useState([]);
-    const [weight, setWeight] = useState(null);
     const [user, setUser] = useState({});
-    
-    const handleAddWeight = async(e)=> {
-        e.preventDefault();
-        try {
-            const token = localStorage.getItem('token');
-            await axios.post('http://localhost:3000/api/users/weight', {weight, userId: user._id}, {headers: {Authorization: `Bearer ${token}`}});
-            const response2 = await axios.get(`http://localhost:3000/api/users/${user._id}/weights`, {headers: {Authorization: `Bearer ${token}`}});
-            setWeights(response2.data);
-            setWeight(null);
-            e.target.reset()
-        } catch (error) {
-            console.error("Error adding a weight")
-        }
-    }
+    const navigate = useNavigate();
 
     const fetchUserAndWeights = async ()=> {
         try {
@@ -36,6 +22,7 @@ const Dashboard = ({setIsAuthenticated}) => {
             setUser(response1.data.user)
             const response2 = await axios.get(`http://localhost:3000/api/users/${response1.data.user._id}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response2.data)
+            
         } catch (error) {
             console.error("Error fetching weights", error)
         }
@@ -48,6 +35,7 @@ const Dashboard = ({setIsAuthenticated}) => {
     return (
         <div>
             <h2>Dashboard {user.username}</h2>
+            <Button onClick={()=>navigate('/setGoal', {state: user})}>Set a goal</Button>
             <Row>
                 <Col>
             <AddWeight userId={user._id} setWeights={setWeights}/>
