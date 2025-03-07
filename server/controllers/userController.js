@@ -5,12 +5,14 @@ const jwt = require("jsonwebtoken");
 
 const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+    expiresIn: "1hr",
   });
 };
 
 // Register a new user
 exports.registerUser = async (req, res) => {
+  console.log("Received a post request to register a new user.");
+  console.log(req.body);
   const { username, email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -20,26 +22,24 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
       weights: [],
       goal: { targetWeight: 0, deadline: null },
-      settings: { unit: "kg", notifications: true },
+      settings: { unit: "kg", notifications: false },
     });
 
     await newUser.save();
 
     // Generate JWT Token
     const token = generateToken(newUser._id);
-
-    res
-      .status(201)
-      .json({ message: "User registered successfully!", token, user: newUser });
+    res.status(201).json({ message: "User registered successfully!", token });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };
 
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user)
       return res.status(401).json({ error: "Invalid email or password" });
 
@@ -50,8 +50,9 @@ exports.loginUser = async (req, res) => {
     // Generate JWT Token
     const token = generateToken(user._id);
 
-    res.status(200).json({ message: "Login successful", token, user });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -73,7 +74,7 @@ exports.addWeightEntry = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({ message: "Weight entry added", user });
+    res.status(200).json({ message: "Weight entry added" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -93,7 +94,7 @@ exports.deleteWeightEntry = async (req, res) => {
       return res.status(404).json({ error: "User or weight entry not found" });
     }
 
-    res.status(200).json({ message: "Weight entry deleted", user });
+    res.status(200).json({ message: "Weight entry deleted" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -118,7 +119,7 @@ exports.updateWeightEntry = async (req, res) => {
       return res.status(404).json({ error: "User or weight entry not found" });
     }
 
-    res.status(200).json({ message: "Weight entry updated", user });
+    res.status(200).json({ message: "Weight entry updated" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -138,7 +139,7 @@ exports.updateSettings = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ message: "Settings updated", user });
+    res.status(200).json({ message: "Settings updated" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -163,7 +164,7 @@ exports.updateUserGoal = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ message: "Goal updated", user });
+    res.status(200).json({ message: "Goal updated" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -174,7 +175,6 @@ exports.getSortedWeights = async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await User.findById(userId);
-
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -191,7 +191,7 @@ exports.getSortedWeights = async (req, res) => {
 // Get user data
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("-password");
+    const user = await User.findById(req.userId).select("-password -weights"); // return user data without pw or weights
     if (!user) return res.status(404).json({ error: "User not found" });
 
     res.status(200).json({ user });

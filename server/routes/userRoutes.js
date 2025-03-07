@@ -12,8 +12,6 @@ const {
 } = require("../controllers/userController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-console.log(getUser); // This should print the function definition or [Function: getUser]
-
 const router = express.Router();
 
 // Auth routes

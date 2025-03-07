@@ -2,16 +2,24 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Lineplot from '../components/Lineplot';
+import WeightList from "../components/WeightList";
+import Stats from '../components/Stats'
+import AddWeight from '../components/AddWeight'
 
-const Dashboard = () => {
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+const Dashboard = ({setIsAuthenticated}) => {
     const [weights, setWeights] = useState([]);
-    const [weight, setWeight] = useState(null)
+    const [weight, setWeight] = useState(null);
+    const [user, setUser] = useState({});
 
     const navigate = useNavigate();
 
-    
     const handleLogout = () => {
         localStorage.removeItem("token");
+        setIsAuthenticated(false);
         navigate('/login');
     }
     
@@ -19,45 +27,52 @@ const Dashboard = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:3000/weight', {weight}, {headers: {Authorization: `Bearer ${token}`}});
-            setWeights(response.data.weights);
+            await axios.post('http://localhost:3000/api/users/weight', {weight, userId: user._id}, {headers: {Authorization: `Bearer ${token}`}});
+            const response2 = await axios.get(`http://localhost:3000/api/users/${user._id}/weights`, {headers: {Authorization: `Bearer ${token}`}});
+            setWeights(response2.data);
             setWeight(null);
             e.target.reset()
         } catch (error) {
             console.error("Error adding a weight")
         }
     }
+
+    const fetchUserAndWeights = async ()=> {
+        try {
+            const token = localStorage.getItem('token');
+            const response1 = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+            setUser(response1.data.user)
+            const response2 = await axios.get(`http://localhost:3000/api/users/${response1.data.user._id}/weights`, {headers: {Authorization: `Bearer ${token}`}});
+            setWeights(response2.data)
+        } catch (error) {
+            console.error("Error fetching weights", error)
+        }
+    }
     
     useEffect(()=>{
-        const fetchWeights = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3000/weight', {headers: {Authorization: `Bearer ${token}`}});
-                setWeights(response.data.weights)
-            } catch (error) {
-                console.error("Error fetching weights")
-            }
-        }
-        fetchWeights();
+        fetchUserAndWeights()
     }, [])
     
     return (
         <div>
-            <h2>Dashboard</h2>
+            <h2>Dashboard {user.username}</h2>
             <button onClick={handleLogout}>Logout</button>
-
-            <form onSubmit={handleAddWeight}>
-                <input type="number" onChange={(e)=> setWeight(e.target.value)}/>
-                <button type="submit">Add Weight</button>
-            </form>
-            <ul>
-                {weights.map((w, windex)=> (
-                    <li key={windex}>{w.date} - {w.weight}</li>
-                ))}
-            </ul>
-
+            <Row>
+                <Col>
+            <AddWeight userId={user._id} setWeights={setWeights}/>
+                </Col>
+                <Col>
+            <WeightList weights={weights} userId={user._id} setWeights={setWeights}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+            <Stats />
+                </Col>
+                <Col>
             <Lineplot weights={weights}/>
-
+                </Col>
+            </Row>
         </div>
     )
 }
