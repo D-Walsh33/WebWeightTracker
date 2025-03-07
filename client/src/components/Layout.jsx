@@ -4,10 +4,10 @@ import Container from "react-bootstrap/esm/Container";
 import Header from "./Header";
 import Footer from "./Footer";
 
-function Layout() {
+function Layout({isAuthenticated,setIsAuthenticated}) {
   return (
     <Container>
-      <Header />
+      <Header isAuthenticated={isAuthenticated}setIsAuthenticated={setIsAuthenticated}/>
       <main>
         <Outlet />
       </main>

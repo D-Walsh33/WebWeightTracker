@@ -6,13 +6,16 @@ ChartJS.register(
 
 const Lineplot = (props)=> {
     const options={}
-    let newWeights = props.weights.map((w)=>w.weight)
-    let newDates = props.weights.map((w)=>w.date.toLocaleString().split('T')[0])
+    //order the dates from oldest to newest
+    let orderedDates = props.weights.sort((a, b) => new Date(a.date) - new Date(b.date))
+    // create arrays to pass to the plot
+    let newWeights = orderedDates.map((w)=>w.weight)
+    let newDates = orderedDates.map((w)=>w.date.toLocaleString().split('T')[0])
     //console.log(newDates, newWeights) // neeed to stop this from logging when number input changes?
     const data = {
         labels: newDates,
         datasets: [{ 
-        label: 'My First Dataset',
+        label: 'Tracking My Weight',
         data: newWeights,
         }]
 };

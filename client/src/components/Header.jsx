@@ -1,11 +1,20 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
+import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/esm/Button';
 
-export default function Header(){
+export default function Header({isAuthenticated, setIsAuthenticated}){
+  const navigate = useNavigate();
+  const handleLogout = ()=> {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+     navigate('/login');
+  }
     return (
       <Navbar expand="lg" className="bg-primary">
         <Container>
-          <Navbar.Brand href="#">Weight Tracker</Navbar.Brand>
+          <Navbar.Brand>Weight Tracker</Navbar.Brand>
+          {isAuthenticated && (<Button onClick={handleLogout}>Logout</Button>)}
         </Container>
       </Navbar>
     )

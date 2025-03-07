@@ -14,14 +14,6 @@ const Dashboard = ({setIsAuthenticated}) => {
     const [weights, setWeights] = useState([]);
     const [weight, setWeight] = useState(null);
     const [user, setUser] = useState({});
-
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        setIsAuthenticated(false);
-        navigate('/login');
-    }
     
     const handleAddWeight = async(e)=> {
         e.preventDefault();
@@ -56,7 +48,6 @@ const Dashboard = ({setIsAuthenticated}) => {
     return (
         <div>
             <h2>Dashboard {user.username}</h2>
-            <button onClick={handleLogout}>Logout</button>
             <Row>
                 <Col>
             <AddWeight userId={user._id} setWeights={setWeights}/>

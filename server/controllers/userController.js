@@ -170,7 +170,7 @@ exports.updateUserGoal = async (req, res) => {
   }
 };
 
-// Get sorted weight entries (oldest to newest)
+// Get sorted weight entries (latest to oldest)
 exports.getSortedWeights = async (req, res) => {
   const { userId } = req.params;
   try {
@@ -180,7 +180,7 @@ exports.getSortedWeights = async (req, res) => {
     }
 
     const sortedWeights = user.weights.sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
+      (a, b) => new Date(b.date) - new Date(a.date)
     );
     res.status(200).json(sortedWeights);
   } catch (error) {
