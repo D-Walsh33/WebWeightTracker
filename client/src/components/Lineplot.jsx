@@ -1,3 +1,7 @@
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
+
 import {Line} from 'react-chartjs-2'
 import { Chart as ChartJS, CategoryScale, LinearScale,  PointElement, LineElement, Title, Tooltip, Legend} from 'chart.js';
 ChartJS.register(
@@ -9,9 +13,10 @@ const Lineplot = (props)=> {
     //order the dates from oldest to newest
     let orderedDates = props.weights.sort((a, b) => new Date(a.date) - new Date(b.date))
     // create arrays to pass to the plot
+
     let newWeights = orderedDates.map((w)=>w.weight)
-    let newDates = orderedDates.map((w)=>w.date.toLocaleString().split('T')[0])
-    //console.log(newDates, newWeights) // neeed to stop this from logging when number input changes?
+    //let newDates = orderedDates.map((w)=>w.date.split('T')[0])
+    let newDates = orderedDates.map((w)=> dayjs(w.date).utc().format("MM/DD/YYYY"))
     const data = {
         labels: newDates,
         datasets: [{ 

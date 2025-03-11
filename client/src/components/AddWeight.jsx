@@ -14,7 +14,7 @@ export default function AddWeight(props){
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:3000/api/users/weight', {weight, userId, date}, {headers: {Authorization: `Bearer ${token}`}});
+            await axios.post('http://localhost:3000/api/users/weight', {weight, userId, date:new Date(date).toISOString()}, {headers: {Authorization: `Bearer ${token}`}});
             const response2 = await axios.get(`http://localhost:3000/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response2.data);
         } catch (error) {

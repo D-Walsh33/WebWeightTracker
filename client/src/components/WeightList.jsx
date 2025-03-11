@@ -8,6 +8,11 @@ import EditWeightForm from './EditWeightForm'
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
 export default function WeightList({weights, userId, setWeights}){
     const [show, setShow] = useState(false);
     const [editWeight, setEditWeight] = useState(null)
@@ -54,7 +59,9 @@ export default function WeightList({weights, userId, setWeights}){
                 <ListGroup.Item key={index}>
                     <Row>
                         <Col>
-                        {weight.weight}kgs - {weight.date.split('T')[0]}
+                        {weight.weight} kgs 
+                        <br />
+                        {dayjs(weight.date).utc().format("MM/DD/YYYY")}
                         </Col>
                         <Col></Col>
                         <Col>

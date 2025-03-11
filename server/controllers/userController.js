@@ -62,6 +62,7 @@ exports.addWeightEntry = async (req, res) => {
   const { userId, weight, date } = req.body;
   try {
     const entryDate = date ? new Date(date) : new Date();
+    console.log(entryDate);
     if (entryDate > new Date()) {
       return res.status(400).json({ error: "Date cannot be in the future" });
     }

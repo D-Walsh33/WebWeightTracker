@@ -30,7 +30,7 @@ function App() {
             <Route index element={isAuthenticated ? <Dashboard /> : <Navigate to="/login"/>}/>
             <Route path='/register' element={<Register setIsAuthenticated={setIsAuthenticated} />}/>
             <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />}/>
-            <Route path='/setGoal' element={isAuthenticated ? <SetGoal /> : <Navigate to="/login"/>}/>
+            {/* </><Route path='/setGoal' element={isAuthenticated ? <SetGoal /> : <Navigate to="/login"/>}/> */}
         </Route>
       </Routes>
     </BrowserRouter>
