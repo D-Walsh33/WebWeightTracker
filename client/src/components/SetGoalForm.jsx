@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import dateHelper from '../helpers/dateString';
 import axios from 'axios';
 
-function SetGoalForm({userId}) {
+function SetGoalForm({userId, setUser}) {
   const [show, setShow] = useState(false);
   const [weight, setWeight] = useState('');
   const [deadline, setDeadline] = useState(null);
@@ -13,8 +13,23 @@ function SetGoalForm({userId}) {
   const handleSave = async () => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.put('http://localhost:3000/api/users/goal', {userId, targetWeight:weight, deadline}, {headers: {Authorization: `Bearer ${token}`}})
-        console.log(response);
+        await axios.put('http://localhost:3000/api/users/goal', {userId, targetWeight:weight, deadline}, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+        setUser(response.data.user)
+        setDeadline(null);
+        setWeight('');
+        handleClose();
+    } catch (error) {
+        console.error('Error setting a new goal', error)
+    }
+  }
+
+  const handleRemove = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        await axios.put('http://localhost:3000/api/users/goal', {userId, targetWeight:null, deadline:null}, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+        setUser(response.data.user)
         setDeadline(null);
         setWeight('');
         handleClose();
@@ -49,6 +64,9 @@ function SetGoalForm({userId}) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="danger" onClick={handleRemove}>
+            Remove Goal
+          </Button>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

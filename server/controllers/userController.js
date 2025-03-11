@@ -21,7 +21,7 @@ exports.registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       weights: [],
-      goal: { targetWeight: 0, deadline: null },
+      goal: { targetWeight: null, deadline: null },
       settings: { unit: "kg", notifications: false },
     });
 

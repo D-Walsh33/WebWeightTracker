@@ -1,9 +1,21 @@
 import { useState, useEffect } from "react"
-export default function Stats({user, weights}){
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroupItem from "react-bootstrap/esm/ListGroupItem";
+import Card from 'react-bootstrap/Card';
+import SetGoalForm from "./SetGoalForm";
+import Container from "react-bootstrap/esm/Container";
+dayjs.extend(utc);
+
+export default function Stats({user, weights, setUser}){
     const [initialWeight, setInitialWeight]= useState(null)
     const [lowestWeight, setLowestWeight]= useState(null)
     const [recentWeight, setRecentWeight] = useState(null)
     const [totalWeightLost, setTotalWeightLost] = useState(null)
+    const [goal, setGoal] = useState(null)
+    const [daysTillGoal, setDaysTillGoal] = useState(null)
+    const [amtPerDay, setAmtPerDay] = useState(null)
 
     const getLowest = (weights) => {
         if (weights.length > 0) return Math.min(...weights.map(w=>w.weight));
@@ -25,23 +37,118 @@ export default function Stats({user, weights}){
         return null;
     };
 
+    const daysTill = (date)=> {
+        let date1 = dayjs(date)
+        let today = dayjs()
+        let dif = date1.diff(today, 'd')
+        return dif + 1
+    }
+
+    const getAmtPerDay = (goal, recentWeight, daysTill) => {
+        let current = parseFloat(recentWeight)
+        let goalWeight = parseFloat(goal)
+        return (current - goalWeight) / daysTill
+    }
+
+
     useEffect(()=> {
+        setGoal(user.goal?.targetWeight)
         setRecentWeight(getRecent(weights))
         setInitialWeight(getInitial(weights))
-        setLowestWeight(getLowest(weights));
-    }, [weights])
+        setLowestWeight(getLowest(weights))
+        setDaysTillGoal(daysTill(user.goal?.deadline))
+    }, [weights, user])
 
     useEffect(() => {
         setTotalWeightLost(calc(initialWeight, recentWeight));
-    }, [initialWeight, recentWeight]);
+        setAmtPerDay(getAmtPerDay(goal, recentWeight, daysTillGoal))
+    }, [initialWeight, recentWeight, goal, daysTillGoal]);
 
 
     return (
-        <>
-            <div>Your initial weight: {initialWeight!== null? initialWeight + user.settings?.unit: "N/A"} </div>
-            <div>Your lowest weight: {lowestWeight !== null ? lowestWeight + user.settings?.unit: "N/A"} </div>
-            <div>Your most recent weight: {recentWeight !== null? recentWeight + user.settings?.unit: "N/A"} </div>
-            <div>The amount of weight you have lost: {totalWeightLost !== null? totalWeightLost + user.settings?.unit: "N/A"}</div>
-        </>
+        
+        <Card body>  
+            <Container>
+            <ListGroup>
+            <ListGroupItem className="d-flex justify-content-between align-items-start">
+                <div>
+                    Your initial weight:
+                </div>
+                <div>
+                    {initialWeight!== null? initialWeight + user.settings?.unit: "N/A"}
+                </div>
+                
+            </ListGroupItem>
+            <ListGroupItem className="d-flex justify-content-between align-items-start">
+                <div>
+                    Your lowest weight: 
+                </div>
+                <div>
+                    {lowestWeight !== null ? lowestWeight + user.settings?.unit: "N/A"} 
+                </div>
+            </ListGroupItem>
+            <ListGroupItem className="d-flex justify-content-between align-items-start">
+                <div>
+                    Your most recent weight: 
+                </div>
+                <div>
+                    {recentWeight !== null? recentWeight + user.settings?.unit: "N/A"} 
+                </div>
+                
+            </ListGroupItem>
+            <ListGroupItem className="d-flex justify-content-between align-items-start">
+                <div>
+                    The amount of weight you have lost: 
+                </div>
+                <div>
+                    {totalWeightLost !== null? totalWeightLost.toFixed(2) + user.settings?.unit: "N/A"}
+                </div>
+
+            </ListGroupItem>
+            </ListGroup>
+            <br />
+            {
+                goal? 
+                <ListGroup>
+                    <ListGroupItem className="d-flex justify-content-between align-items-start">
+                        <div>
+                            Your Goal weight: 
+                        </div>
+                        <div>
+                            {user.goal?.targetWeight + user.settings?.unit}
+                        </div>
+                    </ListGroupItem>
+                    <ListGroupItem className="d-flex justify-content-between align-items-start">
+                        <div>
+                            Deadline: 
+                        </div>
+                        <div>
+                            {user.goal.deadline? dayjs(user.goal.deadline).utc().format('MM/DD/YYYY') : 'N/A'}
+                        </div>
+                    </ListGroupItem>
+                    <ListGroupItem className="d-flex justify-content-between align-items-start">
+                        <div>
+                            Days until deadline: 
+                        </div>
+                        <div>
+                            {daysTillGoal? daysTillGoal: 'N/A'}
+                        </div>
+                    </ListGroupItem>
+                    <ListGroupItem className="d-flex justify-content-between align-items-start">
+                        <div>
+                            To hit deadline you need to lose: 
+                        </div>
+                        <div>
+                            {amtPerDay? amtPerDay.toFixed(2) +user.settings?.unit + 's/day': 'N/A'}
+                        </div>
+                    </ListGroupItem>
+                    </ListGroup>
+                    :
+                    <div>Set a goal to see stats related to that goal!</div>
+                }
+            <br />
+            <SetGoalForm  userId={user._id} setUser={setUser}/>
+        </Container>
+        </Card>
     )
 }

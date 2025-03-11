@@ -7,9 +7,11 @@ import Stack from 'react-bootstrap/Stack';
 import EditWeightForm from './EditWeightForm'
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
-
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import CardBody from 'react-bootstrap/esm/CardBody';
 
 dayjs.extend(utc);
 
@@ -54,26 +56,33 @@ export default function WeightList({weights, userId, setWeights}){
             <EditWeightForm userId={userId} editWeight={editWeight} onEditedWeight={handleEditedWeight}/>
         </Modal.Body>
         </Modal>
+        <Card body> 
+        <Container>
         <ListGroup className='weightList'>
             {weights.map((weight, index)=> (
                 <ListGroup.Item key={index}>
                     <Row>
-                        <Col>
-                        {weight.weight} kgs 
-                        <br />
+                        <Col className='text-center'>
                         {dayjs(weight.date).utc().format("MM/DD/YYYY")}
                         </Col>
-                        <Col></Col>
+                        <Col className='text-center'> 
+                            <div className=''>
+                                {weight.weight} kgs 
+                            </div>
+                        </Col>
                         <Col>
-                            <Stack gap={3}>
-                            <Button variant="secondary" size="sm" onClick={()=>handleEdit(weight)}>Edit</Button>
-                            <Button variant="danger" size="sm" onClick={()=>{handleDelete(weight._id)}}>Delete</Button>
+                            <Stack direction="horizontal" gap={3}>
+                            <Button className='p-2 ms-auto' variant="secondary" size="sm" onClick={()=>handleEdit(weight)}><i class="fa-solid fa-pen-to-square"></i></Button>
+                            <div className="vr " />
+                            <Button className='p-2' variant="danger" size="sm" onClick={()=>{handleDelete(weight._id)}}><i class="fa-solid fa-trash"></i></Button>
                             </Stack>
                         </Col>
                     </Row>
                 </ListGroup.Item>
             ))}
-        </ListGroup>
+            </ListGroup>
+        </Container>
+        </Card>
     </>
     )
 }

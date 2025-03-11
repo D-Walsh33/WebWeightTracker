@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import {useState} from 'react'
 import axios from 'axios'
 import dateHelper from '../helpers/dateString';
+import Card from 'react-bootstrap/Card';
 
 export default function AddWeight(props){
     const {userId, lastWeight, setWeights} = props
@@ -25,21 +26,23 @@ export default function AddWeight(props){
 
 
     return (
-        <Container>
-        <Form onSubmit={handleAddWeight}>
-            <Form.Group>
-                <Form.Label>Enter your weight here!</Form.Label>
-                <Form.Control size="lg" type="number" step={.01} placeholder="Weight"  required onChange={(e)=> setWeight(e.target.value)} />
-            </Form.Group>
-            <Form.Group>
-               <Form.Label>Enter the date here!</Form.Label>
-                <Form.Control size="lg" type="date" max={dateHelper.todayDateString()} value={date} placeholder="date" required onChange={(e)=> setDate(e.target.value)}/> 
-            </Form.Group>
-            <br />
-            <Button variant="primary" type="submit">
-             Submit
-            </Button>
-        </Form>
+        <Card body>
+                <Container>
+            <Form onSubmit={handleAddWeight}>
+                <Form.Group>
+                    <Form.Label>Enter your weight here:</Form.Label>
+                    <Form.Control size="lg" type="number" step={.01} placeholder="Weight"  required onChange={(e)=> setWeight(e.target.value)} />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Enter the date here!</Form.Label>
+                    <Form.Control size="lg" type="date" max={dateHelper.todayDateString()} value={date} placeholder="date" required onChange={(e)=> setDate(e.target.value)}/> 
+                </Form.Group>
+                <br />
+                <Button variant="primary" type="submit">
+                Submit
+                </Button>
+            </Form>
         </Container>
+        </Card>
     )
 }

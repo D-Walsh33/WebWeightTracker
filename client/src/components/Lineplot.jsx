@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+
 dayjs.extend(utc);
 
+import Card from 'react-bootstrap/Card';
 import {Line} from 'react-chartjs-2'
 import { Chart as ChartJS, CategoryScale, LinearScale,  PointElement, LineElement, Title, Tooltip, Legend} from 'chart.js';
 ChartJS.register(
@@ -27,7 +29,9 @@ const Lineplot = (props)=> {
         
 
     return (
-        <Line options={options} data={data}/>
+        <Card body>
+            <Line options={options} data={data}/>
+        </Card>
     )
 }
 

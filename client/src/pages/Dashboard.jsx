@@ -32,23 +32,20 @@ const Dashboard = () => {
     
     return (
         <div>
-            <h2>{user.username}'s Dashboard</h2>
             <Row>
                 <Col>
-            <AddWeight userId={user._id} setWeights={setWeights}/>
+                    <AddWeight userId={user._id} setWeights={setWeights}/>
                 </Col>
                 <Col>
-            <WeightList weights={weights} userId={user._id} setWeights={setWeights}/>
+                    <Lineplot weights={weights}/>
                 </Col>
             </Row>
             <Row>
                 <Col>
-                <SetGoalForm  userId={user._id}/>
-                <br />
-            <Stats weights={weights} user={user}/>
+                    <Stats weights={weights} user={user} setUser={setUser}/>
                 </Col>
                 <Col>
-            <Lineplot weights={weights}/>
+                    <WeightList weights={weights} userId={user._id} setWeights={setWeights}/>
                 </Col>
             </Row>
         </div>
