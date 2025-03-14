@@ -7,7 +7,7 @@ import Footer from "./Footer";
 function Layout({isAuthenticated,setIsAuthenticated}) {
   return (
     <Container>
-      <Header isAuthenticated={isAuthenticated}setIsAuthenticated={setIsAuthenticated}/>
+      <Header isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
       <main>
         <Outlet />
       </main>

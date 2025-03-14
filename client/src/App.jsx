@@ -4,7 +4,6 @@ import Layout from "./components/Layout";
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
-import SetGoal from "./pages/SetGoal";
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -30,7 +29,6 @@ function App() {
             <Route index element={isAuthenticated ? <Dashboard /> : <Navigate to="/login"/>}/>
             <Route path='/register' element={<Register setIsAuthenticated={setIsAuthenticated} />}/>
             <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />}/>
-            {/* </><Route path='/setGoal' element={isAuthenticated ? <SetGoal /> : <Navigate to="/login"/>}/> */}
         </Route>
       </Routes>
     </BrowserRouter>

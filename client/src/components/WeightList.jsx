@@ -15,7 +15,7 @@ import CardBody from 'react-bootstrap/esm/CardBody';
 
 dayjs.extend(utc);
 
-export default function WeightList({weights, userId, setWeights}){
+export default function WeightList({weights, userId, setWeights, user}){
     const [show, setShow] = useState(false);
     const [editWeight, setEditWeight] = useState(null)
     const handleClose = () => setShow(false);
@@ -58,6 +58,7 @@ export default function WeightList({weights, userId, setWeights}){
         </Modal>
         <Card body> 
         <Container>
+            <h3>Previous Weights</h3>
         <ListGroup className='weightList'>
             {weights.map((weight, index)=> (
                 <ListGroup.Item key={index}>
@@ -67,7 +68,7 @@ export default function WeightList({weights, userId, setWeights}){
                         </Col>
                         <Col className='text-center'> 
                             <div className=''>
-                                {weight.weight} kgs 
+                                {weight.weight} {user.settings.unit} 
                             </div>
                         </Col>
                         <Col>

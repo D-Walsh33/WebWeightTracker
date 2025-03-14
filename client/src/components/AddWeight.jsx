@@ -28,7 +28,8 @@ export default function AddWeight(props){
     return (
         <Card body>
                 <Container>
-            <Form onSubmit={handleAddWeight}>
+                    <h3>Add Weight Entry</h3>
+                <Form onSubmit={handleAddWeight}>
                 <Form.Group>
                     <Form.Label>Enter your weight here:</Form.Label>
                     <Form.Control size="lg" type="number" step={.01} placeholder="Weight"  required onChange={(e)=> setWeight(e.target.value)} />

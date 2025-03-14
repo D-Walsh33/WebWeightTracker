@@ -30,6 +30,7 @@ const Lineplot = (props)=> {
 
     return (
         <Card body>
+            <h3>Weight Graph</h3>
             <Line options={options} data={data}/>
         </Card>
     )

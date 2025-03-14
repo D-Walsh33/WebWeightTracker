@@ -69,6 +69,7 @@ export default function Stats({user, weights, setUser}){
         
         <Card body>  
             <Container>
+                <h3>Statistics</h3>
             <ListGroup>
             <ListGroupItem className="d-flex justify-content-between align-items-start">
                 <div>

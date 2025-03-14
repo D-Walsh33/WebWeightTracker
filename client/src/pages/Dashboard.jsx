@@ -4,9 +4,10 @@ import Lineplot from '../components/Lineplot';
 import WeightList from "../components/WeightList";
 import Stats from '../components/Stats'
 import AddWeight from '../components/AddWeight'
+import Profile from '../components/Profile'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import SetGoalForm from "../components/SetGoalForm";
+
 
 const Dashboard = () => {
     const [weights, setWeights] = useState([]);
@@ -34,6 +35,7 @@ const Dashboard = () => {
         <div>
             <Row>
                 <Col>
+                    <Profile user={user} setUser={setUser}/>
                     <AddWeight userId={user._id} setWeights={setWeights}/>
                 </Col>
                 <Col>
@@ -45,7 +47,7 @@ const Dashboard = () => {
                     <Stats weights={weights} user={user} setUser={setUser}/>
                 </Col>
                 <Col>
-                    <WeightList weights={weights} userId={user._id} setWeights={setWeights}/>
+                    <WeightList weights={weights} userId={user._id} user={user} setWeights={setWeights}/>
                 </Col>
             </Row>
         </div>
