@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/Form';
 
 const Register = ({ setIsAuthenticated }) => {
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
     const navigate = useNavigate();
@@ -15,7 +14,7 @@ const Register = ({ setIsAuthenticated }) => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/users/register', {username, email, password});
+            const response = await axios.post('http://localhost:3000/api/users/register', {username, password});
             console.log(response)
             localStorage.setItem('token', response.data.token);
             setIsAuthenticated(true); // Update state
@@ -34,25 +33,21 @@ const Register = ({ setIsAuthenticated }) => {
                     <Form.Control type="text" placeholder="Enter username" onChange={(e)=>setUsername(e.target.value)} required/>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={(e)=>setEmail(e.target.value)} required />
-                    <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} required/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                 Submit
+                 Register
                 </Button>
             </Form>
-            <h3>
+            <div id="register-login">
+            <h4>Already have an account?</h4>
+            <h4>
                 <a href="/login">
-                    Login
+                    Click here to login.
                 </a>
-            </h3>
+            </h4>
+            </div>
         </div>
     )
 }

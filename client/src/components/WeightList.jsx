@@ -58,7 +58,7 @@ export default function WeightList({weights, userId, setWeights, user}){
         </Modal>
         <Card body> 
         <Container>
-            <h3>Previous Weights</h3>
+            <h4>Previous Weights</h4>
         <ListGroup className='weightList'>
             {weights.map((weight, index)=> (
                 <ListGroup.Item key={index}>
@@ -68,7 +68,9 @@ export default function WeightList({weights, userId, setWeights, user}){
                         </Col>
                         <Col className='text-center'> 
                             <div className=''>
-                                {weight.weight} {user.settings.unit} 
+                                <b>
+                                    {weight.weight} {user.settings.unit} 
+                                </b>
                             </div>
                         </Col>
                         <Col>

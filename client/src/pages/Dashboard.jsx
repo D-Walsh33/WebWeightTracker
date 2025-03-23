@@ -34,8 +34,8 @@ const Dashboard = () => {
     return (
         <div>
             <Row>
+                <Profile user={user} setUser={setUser}/> 
                 <Col>
-                    <Profile user={user} setUser={setUser}/>
                     <AddWeight userId={user._id} setWeights={setWeights}/>
                 </Col>
                 <Col>

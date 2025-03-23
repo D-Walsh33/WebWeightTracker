@@ -13,16 +13,15 @@ const generateToken = (userId) => {
 exports.registerUser = async (req, res) => {
   console.log("Received a post request to register a new user.");
   console.log(req.body);
-  const { username, email, password } = req.body;
+  const { username, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       username,
-      email,
       password: hashedPassword,
       weights: [],
       goal: { targetWeight: null, deadline: null },
-      settings: { unit: "kg", notifications: false },
+      settings: { unit: "kgs" },
     });
 
     await newUser.save();
@@ -62,7 +61,6 @@ exports.addWeightEntry = async (req, res) => {
   const { userId, weight, date } = req.body;
   try {
     const entryDate = date ? new Date(date) : new Date();
-    console.log(entryDate);
     if (entryDate > new Date()) {
       return res.status(400).json({ error: "Date cannot be in the future" });
     }

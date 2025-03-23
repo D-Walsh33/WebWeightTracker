@@ -23,7 +23,8 @@ const Login = ({ setIsAuthenticated }) => {
     }
     return (
         <div>
-            <h2>Login</h2>
+            <br />
+            <h3>Login</h3>
             <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3">
                     <Form.Label>Username</Form.Label>
@@ -34,14 +35,17 @@ const Login = ({ setIsAuthenticated }) => {
                     <Form.Control type="password" placeholder="Password" onChange={(e)=> setPassword(e.target.value)} required/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                Submit
+                Login
                 </Button>
-            <h3>
-                <a href="/register">
-                    Register
-                </a>
-            </h3>
             </Form>
+            <div id="register-login">
+            <h4> Don't have an account? </h4>
+            <h4> 
+                <a href="/register">
+                    Click here to create a new account.
+                </a>
+            </h4>
+            </div>
         </div>
     )
 }

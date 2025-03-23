@@ -29,9 +29,11 @@ const Lineplot = (props)=> {
         
 
     return (
-        <Card body>
-            <h3>Weight Graph</h3>
+        <Card>
+        <Card.Body>
+            <h4>Weight Graph</h4>
             <Line options={options} data={data}/>
+        </Card.Body>
         </Card>
     )
 }

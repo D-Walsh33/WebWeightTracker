@@ -43,9 +43,10 @@ function SetGoalForm({userId, setUser}) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" size='sm' onClick={handleShow}>
         Set Goal
       </Button>
+      <br />
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

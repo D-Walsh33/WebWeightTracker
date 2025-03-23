@@ -28,7 +28,7 @@ export default function AddWeight(props){
     return (
         <Card body>
                 <Container>
-                    <h3>Add Weight Entry</h3>
+                    <h4>Add Weight Entry</h4>
                 <Form onSubmit={handleAddWeight}>
                 <Form.Group>
                     <Form.Label>Enter your weight here:</Form.Label>

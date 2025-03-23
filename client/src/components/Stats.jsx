@@ -69,8 +69,8 @@ export default function Stats({user, weights, setUser}){
         
         <Card body>  
             <Container>
-                <h3>Statistics</h3>
-            <ListGroup>
+                <h4>Statistics</h4>
+            <ListGroup body className="stats">
             <ListGroupItem className="d-flex justify-content-between align-items-start">
                 <div>
                     Your initial weight:
@@ -106,11 +106,8 @@ export default function Stats({user, weights, setUser}){
                 </div>
 
             </ListGroupItem>
-            </ListGroup>
-            <br />
             {
-                goal? 
-                <ListGroup>
+                goal? <>
                     <ListGroupItem className="d-flex justify-content-between align-items-start">
                         <div>
                             Your Goal weight: 
@@ -137,17 +134,20 @@ export default function Stats({user, weights, setUser}){
                     </ListGroupItem>
                     <ListGroupItem className="d-flex justify-content-between align-items-start">
                         <div>
-                            To hit deadline you need to lose: 
+                            To make the deadline, you need to lose/gain: 
                         </div>
                         <div>
-                            {amtPerDay? amtPerDay.toFixed(2) +user.settings?.unit + 's/day': 'N/A'}
+                            {amtPerDay? amtPerDay.toFixed(2) +user.settings?.unit + '/day': 'N/A'}
                         </div>
                     </ListGroupItem>
-                    </ListGroup>
+                    </>
                     :
+                    <>
+                    <br/> 
                     <div>Set a goal to see stats related to that goal!</div>
+                    </>
                 }
-            <br />
+                </ListGroup>
             <SetGoalForm  userId={user._id} setUser={setUser}/>
         </Container>
         </Card>

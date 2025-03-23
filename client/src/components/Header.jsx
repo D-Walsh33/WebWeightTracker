@@ -11,10 +11,10 @@ export default function Header({isAuthenticated, setIsAuthenticated}){
      navigate('/login');
   }
     return (
-      <Navbar expand="lg" className="bg-primary">
+      <Navbar expand="lg" bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand>Weight Tracker</Navbar.Brand>
-          {isAuthenticated && (<Button onClick={handleLogout}>Logout</Button>)}
+          <Navbar.Brand >Weight Tracker</Navbar.Brand>
+          {isAuthenticated && (<Button onClick={handleLogout} variant='link'>Logout</Button>)}
         </Container>
       </Navbar>
     )

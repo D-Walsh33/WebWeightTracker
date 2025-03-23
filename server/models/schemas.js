@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   weights: [
     {
@@ -18,8 +17,7 @@ const UserSchema = new Schema({
     deadline: Date,
   },
   settings: {
-    unit: { type: String, enum: ["kg", "lbs"], default: "kg" },
-    notifications: { type: Boolean, default: false },
+    unit: { type: String, enum: ["kgs", "lbs"], default: "kgs" },
   },
   createdAt: { type: Date, default: Date.now },
 });
