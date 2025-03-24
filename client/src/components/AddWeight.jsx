@@ -5,6 +5,7 @@ import {useState} from 'react'
 import axios from 'axios'
 import dateHelper from '../helpers/dateString';
 import Card from 'react-bootstrap/Card';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function AddWeight(props){
     const {userId, lastWeight, setWeights} = props
@@ -15,8 +16,8 @@ export default function AddWeight(props){
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:3000/api/users/weight', {weight, userId, date:new Date(date).toISOString()}, {headers: {Authorization: `Bearer ${token}`}});
-            const response2 = await axios.get(`http://localhost:3000/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
+            await axios.post(`${apiUrl}/api/users/weight`, {weight, userId, date:new Date(date).toISOString()}, {headers: {Authorization: `Bearer ${token}`}});
+            const response2 = await axios.get(`${apiUrl}/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response2.data);
         } catch (error) {
             console.error("Error adding a weight", error)

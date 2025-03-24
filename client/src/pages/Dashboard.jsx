@@ -7,6 +7,7 @@ import AddWeight from '../components/AddWeight'
 import Profile from '../components/Profile'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 
 const Dashboard = () => {
@@ -16,10 +17,10 @@ const Dashboard = () => {
     const fetchUserAndWeights = async ()=> {
         try {
             const token = localStorage.getItem('token');
-            const response1 = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+            const response1 = await axios.get(`${apiUrl}/api/users/me`, {headers: {Authorization: `Bearer ${token}`}});
             setUser(response1.data.user)
             console.log(response1.data.user)
-            const response2 = await axios.get(`http://localhost:3000/api/users/${response1.data.user._id}/weights`, {headers: {Authorization: `Bearer ${token}`}});
+            const response2 = await axios.get(`${apiUrl}/api/users/${response1.data.user._id}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response2.data)
             
         } catch (error) {

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+const apiUrl = import.meta.env.VITE_API_URL; 
+
 
 
 const Register = ({ setIsAuthenticated }) => {
@@ -14,7 +16,7 @@ const Register = ({ setIsAuthenticated }) => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/users/register', {username, password});
+            const response = await axios.post(`${apiUrl}/api/users/register`, {username, password});
             console.log(response)
             localStorage.setItem('token', response.data.token);
             setIsAuthenticated(true); // Update state

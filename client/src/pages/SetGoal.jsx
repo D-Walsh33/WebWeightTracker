@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/esm/Button"
 import { useNavigate, useLocation } from "react-router-dom"
-import SetGoalForm from "../components/setGoalForm"
+import SetGoalForm from "../components/SetGoalForm"
 
 export default function SetGoal(props) {
     const navigate = useNavigate()

@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container'
 import axios from 'axios'
 import {useState} from 'react'
 import dateHelper from '../helpers/dateString';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function EditWeightForm({editWeight, userId, onEditedWeight}){
     const [newWeight, setNewWeight] = useState(editWeight.weight);
@@ -13,8 +14,8 @@ export default function EditWeightForm({editWeight, userId, onEditedWeight}){
         e.preventDefault()
         try {
             const token = localStorage.getItem('token');
-            await axios.put('http://localhost:3000/api/users/weight', {userId, weightId:editWeight._id, newWeight, newDate}, {headers: { Authorization: `Bearer ${token}` }})
-            const response = await axios.get(`http://localhost:3000/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
+            await axios.put(`${apiUrl}/api/users/weight`, {userId, weightId:editWeight._id, newWeight, newDate}, {headers: { Authorization: `Bearer ${token}` }})
+            const response = await axios.get(`${apiUrl}/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             onEditedWeight(response.data)
         } catch (error) {
             console.error('Error Editing weight: ', error)

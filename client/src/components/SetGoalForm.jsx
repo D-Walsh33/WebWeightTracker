@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import dateHelper from '../helpers/dateString';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 function SetGoalForm({userId, setUser}) {
   const [show, setShow] = useState(false);
@@ -13,8 +15,8 @@ function SetGoalForm({userId, setUser}) {
   const handleSave = async () => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put('http://localhost:3000/api/users/goal', {userId, targetWeight:weight, deadline}, {headers: {Authorization: `Bearer ${token}`}})
-        const response = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+        await axios.put(`${apiUrl}/api/users/goal`, {userId, targetWeight:weight, deadline}, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.get(`${apiUrl}/api/users/me`, {headers: {Authorization: `Bearer ${token}`}});
         setUser(response.data.user)
         setDeadline(null);
         setWeight('');
@@ -27,8 +29,8 @@ function SetGoalForm({userId, setUser}) {
   const handleRemove = async () => {
     try {
         const token = localStorage.getItem('token');
-        await axios.put('http://localhost:3000/api/users/goal', {userId, targetWeight:null, deadline:null}, {headers: {Authorization: `Bearer ${token}`}})
-        const response = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+        await axios.put(`${apiUrl}/api/users/goal`, {userId, targetWeight:null, deadline:null}, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.get(`${apiUrl}/api/users/me`, {headers: {Authorization: `Bearer ${token}`}});
         setUser(response.data.user)
         setDeadline(null);
         setWeight('');

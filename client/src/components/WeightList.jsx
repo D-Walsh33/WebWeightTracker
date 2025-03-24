@@ -11,7 +11,8 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import CardBody from 'react-bootstrap/esm/CardBody';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 dayjs.extend(utc);
 
@@ -25,11 +26,11 @@ export default function WeightList({weights, userId, setWeights, user}){
     const handleDelete = async (weightId) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete('http://localhost:3000/api/users/weight', {
+            await axios.delete(`${apiUrl}/api/users/weight`, {
                 headers: { Authorization: `Bearer ${token}` },
                 data: { weightId, userId } // Correct way to send a body with DELETE
             });
-            const response = await axios.get(`http://localhost:3000/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
+            const response = await axios.get(`${apiUrl}/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response.data);
         } catch (error) {
             console.error('Error deleting weight entry: ', error);

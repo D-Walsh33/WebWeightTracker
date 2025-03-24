@@ -6,6 +6,7 @@ import axios from 'axios'
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Container from 'react-bootstrap/Container'
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Profile({user, setUser}) {
     if (!user || !user.settings) {
@@ -18,8 +19,8 @@ export default function Profile({user, setUser}) {
     const changeUnits = async (unit) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put('http://localhost:3000/api/users/settings', {userId: user._id, settings: {unit, notifications: user.settings.notifications} }, {headers: {Authorization: `Bearer ${token}`}});
-            const response = await axios.get('http://localhost:3000/api/users/me', {headers: {Authorization: `Bearer ${token}`}});
+            await axios.put(`${apiUrl}/api/users/settings`, {userId: user._id, settings: {unit, notifications: user.settings.notifications} }, {headers: {Authorization: `Bearer ${token}`}});
+            const response = await axios.get(`${apiUrl}/api/users/me`, {headers: {Authorization: `Bearer ${token}`}});
             setUser(response.data.user)
         } catch (error) {
             console.error("Error Changing Units!", error)
