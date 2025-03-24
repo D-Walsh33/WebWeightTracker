@@ -16,6 +16,7 @@ export default function MyVerticallyCenteredModal(props) {
       <Modal.Body>
         <p>
           Hello there! This is a simple web app for tracking your weight. I developed this application to practice using Reactjs and Bootstrap with a nodejs server.
+          You can find the Github Repository for this project <a href="https://github.com/D-Walsh33/WebWeightTracker">here!</a>
         </p>
       </Modal.Body>
       <Modal.Footer>
