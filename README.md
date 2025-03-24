@@ -2,6 +2,8 @@
 
 WebWeightTracker is a simple web application that allows users to register, log in, and track their weight progress over time.
 
+![screenshot](images/screenshot.png)
+
 ## Features
 
 - User authentication (Registration and Login)
