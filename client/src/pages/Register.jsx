@@ -32,11 +32,11 @@ const Register = ({ setIsAuthenticated }) => {
             <Form onSubmit={handleRegister}>
                 <Form.Group className="mb-3">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter username" onChange={(e)=>setUsername(e.target.value)} required/>
+                    <Form.Control type="text" placeholder="Enter username" name="username" id="username" onChange={(e)=>setUsername(e.target.value)} required/>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} required/>
+                    <Form.Control type="password" placeholder="Password" id="password" onChange={(e)=>setPassword(e.target.value)} required/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                  Register

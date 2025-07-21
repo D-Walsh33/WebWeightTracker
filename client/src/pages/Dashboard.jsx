@@ -33,7 +33,7 @@ const Dashboard = () => {
     }, [])
     
     return (
-        <div>
+        <div id="dashboard">
             <Row>
                 <Profile user={user} setUser={setUser}/> 
                 <Col>
