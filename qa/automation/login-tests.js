@@ -1,7 +1,6 @@
 const { Builder, By, until } = require("selenium-webdriver");
 
 (async function loginTest() {
-  // Set up WebDriver for Chrome
   let driver = await new Builder().forBrowser("chrome").build();
 
   try {
