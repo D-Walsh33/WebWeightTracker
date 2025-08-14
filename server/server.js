@@ -11,14 +11,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// //logging for troubleshooting
-// app.use((req, res, next) => {
-//   console.log(`Serving: ${req.method} ${req.url}`);
-//   next();
-// });
+//logging for troubleshooting
+app.use((req, res, next) => {
+  console.log(`Serving: ${req.method} ${req.url}`);
+  next();
+});
 
-// Serve static files from the React app's dist folder
-app.use(express.static(path.join(__dirname, "../client/dist")));
+// // Serve static files from the React app's dist folder
+// app.use(express.static(path.join(__dirname, "../client/dist")));
 
 connectDB();
 
