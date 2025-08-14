@@ -17,18 +17,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// // Serve static files from the React app's dist folder
-// app.use(express.static(path.join(__dirname, "../client/dist")));
+// Serve static files from the React app's dist folder
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
 connectDB();
 console.log("Connected to DB:", process.env.MONGODB_URI);
 
 app.use("/api/users/", userRoutes);
 
-// // Handle React Router routes
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-// });
+// Handle React Router routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
