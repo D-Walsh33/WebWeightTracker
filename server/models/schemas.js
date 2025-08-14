@@ -8,12 +8,19 @@ const UserSchema = new Schema({
   weights: [
     {
       _id: { type: Schema.Types.ObjectId, auto: true }, // Unique ID for each entry
-      weight: { type: Number, required: true },
+      weight: {
+        type: Number,
+        required: true,
+        min: [0, "Weight value must be non-negative"],
+      },
       date: { type: Date, default: Date.now },
     },
   ],
   goal: {
-    targetWeight: Number,
+    targetWeight: {
+      type: Number,
+      min: [0, "Target Weight must be non-negative"],
+    },
     deadline: Date,
   },
   settings: {

@@ -27,7 +27,7 @@ export default function EditWeightForm({editWeight, userId, onEditedWeight}){
         <Form onSubmit={handleEditWeight}>
             <Form.Group>
                 <Form.Label>Enter your weight here!</Form.Label>
-                <Form.Control size="lg" type="number" step={.01} placeholder="Weight" value={newWeight} required onChange={(e)=> setNewWeight(e.target.value)} />
+                <Form.Control size="lg" type="number" step={.01} placeholder="Weight" min={0.0} value={newWeight} required onChange={(e)=> setNewWeight(e.target.value)} />
             </Form.Group>
             <Form.Group>
                <Form.Label>Enter the date here!</Form.Label>

@@ -37,4 +37,8 @@
     cursor: pointer;
 }
 
+.addWeightForm{
+    height: 350px !important; 
+}
+
 

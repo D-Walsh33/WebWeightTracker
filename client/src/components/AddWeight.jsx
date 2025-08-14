@@ -17,6 +17,7 @@ export default function AddWeight(props){
         try {
             const token = localStorage.getItem('token');
             await axios.post(`${apiUrl}/api/users/weight`, {weight, userId, date:new Date(date).toISOString()}, {headers: {Authorization: `Bearer ${token}`}});
+            
             const response2 = await axios.get(`${apiUrl}/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
             setWeights(response2.data);
         } catch (error) {
@@ -27,22 +28,24 @@ export default function AddWeight(props){
 
 
     return (
-        <Card body>
-                <Container>
+        <Card body className='h-100 d-flex flex-column w-100'>
+                <Container className='flex-grow-1 overflow-auto'>
                     <h4>Add Weight Entry</h4>
                 <Form onSubmit={handleAddWeight}>
                 <Form.Group>
                     <Form.Label>Enter your weight here:</Form.Label>
-                    <Form.Control size="lg" type="number" step={.01} placeholder="Weight"  required onChange={(e)=> setWeight(e.target.value)} />
+                    <Form.Control size="lg" type="number" step={.01} placeholder="Weight" min={0.0} required onChange={(e)=> setWeight(e.target.value)} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Enter the date here!</Form.Label>
                     <Form.Control size="lg" type="date" max={dateHelper.todayDateString()} value={date} placeholder="date" required onChange={(e)=> setDate(e.target.value)}/> 
                 </Form.Group>
                 <br />
-                <Button variant="primary" type="submit">
-                Submit
-                </Button>
+                <div className='d-flex justify-content-end'>
+                    <Button variant="primary" type="submit" className='ms-auto'>
+                        Submit
+                    </Button>
+                </div>
             </Form>
         </Container>
         </Card>

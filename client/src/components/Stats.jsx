@@ -12,7 +12,7 @@ export default function Stats({user, weights, setUser}){
     const [initialWeight, setInitialWeight]= useState(null)
     const [lowestWeight, setLowestWeight]= useState(null)
     const [recentWeight, setRecentWeight] = useState(null)
-    const [totalWeightLost, setTotalWeightLost] = useState(null)
+    const [totalWeightDif, setTotalWeightDif] = useState(null)
     const [goal, setGoal] = useState(null)
     const [daysTillGoal, setDaysTillGoal] = useState(null)
     const [amtPerDay, setAmtPerDay] = useState(null)
@@ -33,7 +33,7 @@ export default function Stats({user, weights, setUser}){
     }
 
     const calc = (initial, recent) => {
-        if (initial !== null && recent !== null) return parseFloat(initial) - parseFloat(recent);
+        if (initial !== null && recent !== null) return parseFloat(recent) - parseFloat(initial);
         return null;
     };
 
@@ -47,7 +47,7 @@ export default function Stats({user, weights, setUser}){
     const getAmtPerDay = (goal, recentWeight, daysTill) => {
         let current = parseFloat(recentWeight)
         let goalWeight = parseFloat(goal)
-        return (current - goalWeight) / daysTill
+        return (goalWeight - current) / daysTill
     }
 
 
@@ -60,16 +60,19 @@ export default function Stats({user, weights, setUser}){
     }, [weights, user])
 
     useEffect(() => {
-        setTotalWeightLost(calc(initialWeight, recentWeight));
+        setTotalWeightDif(calc(initialWeight, recentWeight));
         setAmtPerDay(getAmtPerDay(goal, recentWeight, daysTillGoal))
     }, [initialWeight, recentWeight, goal, daysTillGoal]);
 
 
     return (
         
-        <Card body>  
+        <Card body className="w-100">  
             <Container>
-                <h4>Statistics</h4>
+                <div className="d-flex justify-content-between align-items-center mb-3 w-100">
+                    <h4 className="mb-0">Statistics</h4>
+                    <SetGoalForm  userId={user._id} setUser={setUser}/>
+                </div>
             <ListGroup body className="stats">
             <ListGroupItem className="d-flex justify-content-between align-items-start">
                 <div>
@@ -99,15 +102,15 @@ export default function Stats({user, weights, setUser}){
             </ListGroupItem>
             <ListGroupItem className="d-flex justify-content-between align-items-start">
                 <div>
-                    The amount of weight you have lost: 
+                    The amount of weight you have lost/gained: 
                 </div>
                 <div>
-                    {totalWeightLost !== null? totalWeightLost.toFixed(2) + user.settings?.unit: "N/A"}
+                    {totalWeightDif !== null? totalWeightDif.toFixed(2) + user.settings?.unit: "N/A"}
                 </div>
 
             </ListGroupItem>
             {
-                goal? <>
+                goal != null ? <>
                     <ListGroupItem className="d-flex justify-content-between align-items-start">
                         <div>
                             Your Goal weight: 
@@ -116,6 +119,16 @@ export default function Stats({user, weights, setUser}){
                             {user.goal?.targetWeight + user.settings?.unit}
                         </div>
                     </ListGroupItem>
+                    <ListGroupItem className="d-flex justify-content-between align-items-start">
+                        <div>
+                            Amount till your goal: 
+                        </div>
+                        <div>
+                            {initialWeight!== null?recentWeight - user.goal?.targetWeight + user.settings?.unit : 'N/A'}
+                        </div>
+                    </ListGroupItem>
+                    {user.goal.deadline != null ? <>
+                    
                     <ListGroupItem className="d-flex justify-content-between align-items-start">
                         <div>
                             Deadline: 
@@ -141,14 +154,18 @@ export default function Stats({user, weights, setUser}){
                         </div>
                     </ListGroupItem>
                     </>
+                    : <>
+                    <br/> 
+                    <div>Set a deadline to see stats related to that deadline!</div>
+                    </>}
+                    </>
                     :
                     <>
                     <br/> 
-                    <div>Set a goal to see stats related to that goal!</div>
+                    <div>Set a goal and a deadline to see stats related to that goal!</div>
                     </>
                 }
                 </ListGroup>
-            <SetGoalForm  userId={user._id} setUser={setUser}/>
         </Container>
         </Card>
     )

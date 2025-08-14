@@ -45,7 +45,7 @@ function SetGoalForm({userId, setUser}) {
 
   return (
     <>
-      <Button variant="primary" size='sm' onClick={handleShow}>
+      <Button variant="secondary" size='sm' onClick={handleShow} className='ms-auto'>
         Set Goal
       </Button>
       <br />
@@ -58,7 +58,7 @@ function SetGoalForm({userId, setUser}) {
           <Form>
             <Form.Group>
                 <Form.Label>Enter your goal weight here!</Form.Label>
-                <Form.Control size="lg" type="number" step={.01} placeholder="Goal Weight" autoFocus required onChange={(e)=> setWeight(e.target.value)} />
+                <Form.Control size="lg" type="number" step={.01} min={0.0} placeholder="Goal Weight" autoFocus required onChange={(e)=> setWeight(e.target.value)} />
             </Form.Group>
             <Form.Group>
                <Form.Label>Enter a Deadline here if you would like!</Form.Label>

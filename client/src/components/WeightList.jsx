@@ -57,7 +57,7 @@ export default function WeightList({weights, userId, setWeights, user}){
             <EditWeightForm userId={userId} editWeight={editWeight} onEditedWeight={handleEditedWeight}/>
         </Modal.Body>
         </Modal>
-        <Card body> 
+        <Card body className='w-100'> 
         <Container>
             <h4>Previous Weights</h4>
         <ListGroup className='weightList'>

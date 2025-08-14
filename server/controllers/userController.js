@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    //expiresIn: "1hr",
     expiresIn: "1hr",
   });
 };
@@ -58,6 +59,7 @@ exports.loginUser = async (req, res) => {
 
 // Add a weight entry (allows past dates)
 exports.addWeightEntry = async (req, res) => {
+  console.log(req);
   const { userId, weight, date } = req.body;
   try {
     const entryDate = date ? new Date(date) : new Date();
@@ -66,13 +68,25 @@ exports.addWeightEntry = async (req, res) => {
     }
 
     const newEntry = { weight, date: entryDate };
+    const user = await User.findById(userId);
+    console.log(user);
+    if (!user) throw new Error("User not found");
+    user.weights.push(newEntry);
+    try {
+      await user.save();
+      res.status(200).json({ message: "Weight entry added" });
+    } catch (error) {
+      if (error.name === "ValidationError") {
+        return res.status(400).json({ error: error.message });
+      }
+      throw error; // re-throw other errors
+    }
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { $push: { weights: newEntry } },
-      { new: true }
-    );
-    res.status(200).json({ message: "Weight entry added" });
+    // const user = await User.findByIdAndUpdate(
+    //   userId,
+    //   { $push: { weights: newEntry } },
+    //   { new: true, runValidators: true }
+    //);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -110,7 +124,7 @@ exports.updateWeightEntry = async (req, res) => {
           "weights.$.date": newDate ? new Date(newDate) : new Date(),
         },
       },
-      { new: true }
+      { new: true, runValidators: true, context: "query" }
     );
 
     if (!user) {
@@ -119,6 +133,9 @@ exports.updateWeightEntry = async (req, res) => {
 
     res.status(200).json({ message: "Weight entry updated" });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ error: error.message });
+    }
     res.status(500).json({ error: error.message });
   }
 };
@@ -155,7 +172,7 @@ exports.updateUserGoal = async (req, res) => {
           "goal.deadline": deadline ? new Date(deadline) : null,
         },
       },
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     if (!user) {

@@ -29,10 +29,13 @@ const Lineplot = (props)=> {
         
 
     return (
-        <Card>
-        <Card.Body>
+        <Card className="h-100 w-100">
+        <Card.Body className="d-flex flex-column">
+            <div className="flex-grow-1 overflow-auto">
+
             <h4>Weight Graph</h4>
             <Line options={options} data={data}/>
+            </div>
         </Card.Body>
         </Card>
     )
