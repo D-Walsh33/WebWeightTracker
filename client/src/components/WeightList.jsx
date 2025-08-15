@@ -31,7 +31,7 @@ export default function WeightList({weights, userId, setWeights, user}){
                 data: { weightId, userId } // Correct way to send a body with DELETE
             });
             const response = await axios.get(`${apiUrl}/api/users/${userId}/weights`, {headers: {Authorization: `Bearer ${token}`}});
-            setWeights(response.data.reverse());
+            setWeights(response.data);
         } catch (error) {
             console.error('Error deleting weight entry: ', error);
         }
