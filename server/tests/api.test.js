@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const app = require("../app"); // path to your Express app
-const User = require("../models/schemas"); // your User schema
+const app = require("../app");
+const User = require("../models/schemas");
 
 let mongoServer;
 let token;
@@ -64,7 +64,6 @@ describe("WebWeightTracker API", () => {
   });
 
   it("should update a weight entry", async () => {
-    // 1️⃣ Add a weight entry first
     const user = await User.findById(userId);
     const weightEntry = user.weights.create({
       weight: 175,
@@ -73,7 +72,6 @@ describe("WebWeightTracker API", () => {
     user.weights.push(weightEntry);
     await user.save();
 
-    // 2️⃣ Update the weight entry
     const res = await request(app)
       .put("/api/users/weight")
       .set("Authorization", `Bearer ${token}`)
@@ -84,12 +82,10 @@ describe("WebWeightTracker API", () => {
         newDate: "2025-09-30",
       });
 
-    // 3️⃣ Assertions
     expect(res.statusCode).toBe(200);
     expect(res.body.weight).toBe(176);
     expect(new Date(res.body.date)).toEqual(new Date("2025-09-30"));
 
-    // 4️⃣ Optional: verify DB is updated
     const updatedUser = await User.findById(userId);
     const updatedEntry = updatedUser.weights.id(weightEntry._id);
     expect(updatedEntry.weight).toBe(176);
