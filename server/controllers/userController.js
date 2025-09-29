@@ -60,7 +60,7 @@ exports.loginUser = async (req, res) => {
 // Add a weight entry (allows past dates)
 exports.addWeightEntry = async (req, res) => {
   console.log(req);
-  const { userId, weight, date } = req.body;
+  const { weight, date } = req.body;
   try {
     const entryDate = date ? new Date(date) : new Date();
     if (entryDate > new Date()) {
@@ -68,13 +68,13 @@ exports.addWeightEntry = async (req, res) => {
     }
 
     const newEntry = { weight, date: entryDate };
-    const user = await User.findById(userId);
+    const user = await User.findById(req.userId);
     console.log(user);
     if (!user) throw new Error("User not found");
     user.weights.push(newEntry);
     try {
       await user.save();
-      res.status(200).json({ message: "Weight entry added" });
+      res.status(201).json({ message: "Weight entry added", weight });
     } catch (error) {
       if (error.name === "ValidationError") {
         return res.status(400).json({ error: error.message });
@@ -131,7 +131,13 @@ exports.updateWeightEntry = async (req, res) => {
       return res.status(404).json({ error: "User or weight entry not found" });
     }
 
-    res.status(200).json({ message: "Weight entry updated" });
+    res
+      .status(200)
+      .json({
+        message: "Weight entry updated",
+        weight: newWeight,
+        date: newDate,
+      });
   } catch (error) {
     if (error.name === "ValidationError") {
       return res.status(400).json({ error: error.message });

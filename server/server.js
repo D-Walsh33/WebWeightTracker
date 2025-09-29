@@ -1,35 +1,21 @@
 require("dotenv").config();
-const express = require("express");
+const mongoose = require("mongoose");
 const connectDB = require("./config/db");
-const cors = require("cors");
+const app = require("./app");
+
 const PORT = process.env.PORT || 4000;
-const userRoutes = require("./routes/userRoutes");
-const path = require("path");
 
-const app = express();
+// Connect to MongoDB
+connectDB()
+  .then(() => {
+    console.log("Connected to DB:", process.env.MONGODB_URI);
 
-app.use(express.json());
-app.use(cors());
-
-//logging for troubleshooting
-app.use((req, res, next) => {
-  console.log(`Serving: ${req.method} ${req.url}`);
-  next();
-});
-
-// Serve static files from the React app's dist folder
-app.use(express.static(path.join(__dirname, "../client/dist")));
-
-connectDB();
-console.log("Connected to DB:", process.env.MONGODB_URI);
-
-app.use("/api/users/", userRoutes);
-
-// Handle React Router routes
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-});
-
-app.listen(PORT, () => {
-  console.log(`Listening on port: ${PORT}`);
-});
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`Listening on port: ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("DB connection error:", err);
+    process.exit(1);
+  });
